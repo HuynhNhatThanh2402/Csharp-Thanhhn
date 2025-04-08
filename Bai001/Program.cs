@@ -1,34 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Diagnostics;
+using System.Security.Cryptography;
 
-class PhanSo : IComparable<PhanSo>
+class PhanSo
 {
-    private int Tu { get; set; }
-    private int Mau { get; set; }
-
-    public PhanSo()
-    {
-        Tu = 0;
-        Mau = 1;
-    }
-
-    public PhanSo(int tu, int mau)
-    {
-        if (mau == 0)
-            throw new ArgumentException("Mau so phai khac 0!!!");
-        Tu = tu;
-        Mau = mau;
-        RutGon();
-    }
+    private int Tu;
+    private int Mau;
 
     public void Nhap()
     {
-        Console.Write("Nhap tu so: ");
+        Console.WriteLine("Nhập tử số: ");
         Tu = int.Parse(Console.ReadLine());
-        Console.Write("Nhap mau so: ");
-        Mau = int.Parse(Console.ReadLine());
-        if (Mau == 0) Mau = 1;
-        RutGon();
+        Console.WriteLine("Nhâp mẫu số: ");
+        Mau = int.Parse(Console.ReadLine());    
     }
 
     public void Xuat()
@@ -36,86 +20,151 @@ class PhanSo : IComparable<PhanSo>
         Console.WriteLine($"{Tu}/{Mau}");
     }
 
-    private int UCLN(int a, int b)
+    private int GCD(int a, int b)
     {
         while (b != 0)
         {
-            int r = a % b;
-            a = b;
-            b = r;
+            int temp = b;
+            b = a % b;
+            a = temp;
         }
-        return Math.Abs(a);
+        return a;
     }
 
     public void RutGon()
     {
-        int gcd = UCLN(Tu, Mau);
+        int gcd = GCD(Tu,Mau);
         Tu /= gcd;
         Mau /= gcd;
-        if (Mau < 0)
-        {
-            Tu = -Tu;
-            Mau = -Mau;
-        }
-    }
-    public static PhanSo operator +(PhanSo a, PhanSo b) =>
-        new PhanSo(a.Tu * b.Mau + b.Tu * a.Mau, a.Mau * b.Mau);
-
-    public static PhanSo operator -(PhanSo a, PhanSo b) =>
-        new PhanSo(a.Tu * b.Mau - b.Tu * a.Mau, a.Mau * b.Mau);
-
-    public static PhanSo operator *(PhanSo a, PhanSo b) =>
-        new PhanSo(a.Tu * b.Tu, a.Mau * b.Mau);
-
-    public static PhanSo operator /(PhanSo a, PhanSo b)
-    {
-        if (b.Tu == 0)
-            throw new DivideByZeroException("Khong the chia cho 0");
-        return new PhanSo(a.Tu * b.Mau, a.Mau * b.Tu);
     }
 
-    public int CompareTo(PhanSo other)
+    public static PhanSo operator +(PhanSo ps1, PhanSo ps2)
     {
-        return (this.Tu * other.Mau).CompareTo(other.Tu * this.Mau);
+        int tu = ps1.Tu * ps2.Mau + ps1.Mau * ps2.Tu;
+        int mau = ps1.Mau * ps2.Mau;
+        PhanSo result = new PhanSo();
+        result.Tu = tu;
+        result.Mau = mau;
+        result.RutGon();
+        return result;
     }
 
-    public override string ToString()
+    public static PhanSo operator -(PhanSo ps1, PhanSo ps2)
     {
-        return $"{Tu}/{Mau}";
+        int tu = ps1.Tu * ps2.Mau - ps1.Mau * ps2.Tu;
+        int mau = ps1.Mau * ps2.Mau;
+        PhanSo result = new PhanSo();
+        result.Tu = tu;
+        result.Mau = mau;
+        result.RutGon();
+        return result;
+    }
+
+    public static PhanSo operator *(PhanSo ps1, PhanSo ps2)
+    {
+        int tu = ps1.Tu * ps2.Tu;
+        int mau = ps1.Mau * ps2.Mau;
+        PhanSo result = new PhanSo();
+        result.Tu = tu;
+        result.Mau = mau;
+        result.RutGon();
+        return result;
+    }
+
+    public static PhanSo operator /(PhanSo ps1, PhanSo ps2)
+    {
+        int tu = ps1.Tu * ps2.Mau;
+        int mau = ps1.Mau * ps2.Tu;
+        PhanSo result = new PhanSo();
+        result.Tu = tu;
+        result.Mau = mau;
+        result.RutGon();
+        return result;
+    }
+
+    public int SoSanh(PhanSo ps)
+    {
+        float a = Tu / ps.Mau;
+        float b = Tu / ps.Mau;
+        float c = a - b;
+        if (c < 1)
+            return -1;
+        if (c > 0)
+            return 1;
+        return 0;
+    }
+
+    public static void SapXepTangDan(PhanSo[] arr)
+    {
+        Array.Sort(arr, (a, b) => a.SoSanh(b));
+    }
+
+    // Sắp xếp giảm dần
+    public static void SapXepGiamDan(PhanSo[] arr)
+    {
+        Array.Sort(arr, (a, b) => b.SoSanh(a));
     }
 }
+
+
 
 class Program
 {
     static void Main()
     {
-        List<PhanSo> ds = new List<PhanSo>();
-        Console.Write("Nhap so luong phan so: ");
-        int n = int.Parse(Console.ReadLine());
+        // Nhập phân số
+        PhanSo ps1 = new PhanSo();
+        Console.WriteLine("Nhap phan so 1:");
+        ps1.Nhap();
 
-        for (int i = 0; i < n; i++)
+        PhanSo ps2 = new PhanSo();
+        Console.WriteLine("Nhap phan so 2:");
+        ps2.Nhap();
+
+        // Xuất phân số
+        Console.WriteLine("\nPhan so 1:");
+        ps1.Xuat();
+        Console.WriteLine("Phan so 2:");
+        ps2.Xuat();
+
+        // Tính toán
+        PhanSo psTong = ps1 + ps2;
+        Console.WriteLine("\nTong: ");
+        psTong.Xuat();
+
+        PhanSo psHieu = ps1 - ps2;
+        Console.WriteLine("\nHieu: ");
+        psHieu.Xuat();
+
+        PhanSo psTich = ps1 * ps2;
+        Console.WriteLine("\nTich: ");
+        psTich.Xuat();
+
+        PhanSo psThuong = ps1 / ps2;
+        Console.WriteLine("\nThuong: ");
+        psThuong.Xuat();
+
+        // So sánh
+        int result = ps1.SoSanh(ps2);
+        if (result > 0) Console.WriteLine("\nPhan so 1 > Phan so 2");
+        else if (result < 0) Console.WriteLine("\nPhan so 1 < Phan so 2");
+        else Console.WriteLine("\nPhan so 1 = Phan so 2");
+
+        // Sắp xếp
+        PhanSo[] phanSos = { ps1, ps2 };
+        Console.WriteLine("\nSap xep tang dan:");
+        PhanSo.SapXepTangDan(phanSos);
+        foreach (var ps in phanSos)
         {
-            Console.WriteLine($"\nPhan so thu {i + 1}:");
-            PhanSo ps = new PhanSo();
-            ps.Nhap();
-            ds.Add(ps);
+            ps.Xuat();
         }
 
-        Console.WriteLine("\nDanh sach phan so sau rut gon:");
-        ds.ForEach(p => p.Xuat());
-
-        PhanSo tong = new PhanSo(0, 1);
-        foreach (var p in ds)
-            tong += p;
-
-        Console.WriteLine($"\nTong cac phan so: {tong}");
-
-        ds.Sort();
-        Console.WriteLine("\nSap xep tang dan:");
-        ds.ForEach(p => Console.WriteLine(p));
-
-        ds.Sort((a, b) => b.CompareTo(a));
         Console.WriteLine("\nSap xep giam dan:");
-        ds.ForEach(p => Console.WriteLine(p));
+        PhanSo.SapXepGiamDan(phanSos);
+        foreach (var ps in phanSos)
+        {
+            ps.Xuat();
+
+        }
     }
 }

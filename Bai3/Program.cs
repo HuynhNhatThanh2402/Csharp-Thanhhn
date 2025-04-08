@@ -1,25 +1,20 @@
 ﻿using System;
-using System.Globalization;
 using System.Threading;
 
 class Program
 {
     static void Main()
     {
-        Console.OutputEncoding = System.Text.Encoding.UTF8;
-        CultureInfo viVN = new CultureInfo("vi-VN");
-        Thread.CurrentThread.CurrentCulture = viVN;
-        Thread.CurrentThread.CurrentUICulture = viVN;
-
+    Console.OutputEncoding = System.Text.Encoding.UTF8;
+        string[] ngayTrongTuan = { "Chủ nhật", "Thứ hai", "Thứ ba", "Thứ tư", "Thứ năm", "Thứ sáu", "Thứ bảy" };
         while (true)
         {
-            DateTime now = DateTime.Now;
+            DateTime currentTime = DateTime.Now;
 
-            string thu = viVN.DateTimeFormat.GetDayName(now.DayOfWeek);
-            string ngay = now.ToString("d/M/yyyy");
-            string gio = now.ToString("H:mm:ss");
+            string dayOfWeek = ngayTrongTuan[(int)currentTime.DayOfWeek];
 
-            Console.WriteLine($"Thời gian hiện tại: {thu}, ngày {ngay}, thời gian: {gio}");
+            Console.Clear();
+            Console.WriteLine($"Thời gian hiện tại: {dayOfWeek}, ngày {currentTime:dd}/{currentTime:MM}/{currentTime:yyyy}, thời gian: {currentTime:HH:mm:ss}");
 
             Thread.Sleep(1000);
         }
