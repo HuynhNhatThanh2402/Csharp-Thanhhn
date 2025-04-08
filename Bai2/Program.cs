@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 class CSanPham
 {
-    public long MaSo { get; set; }
-    public string TieuDe { get; set; }
-    public int Gia { get; set; }
+    protected long MaSo { get; set; }
+    protected string TieuDe { get; set; }
+    protected int Gia { get; set; }
 
     public virtual void Nhap()
     {
@@ -25,9 +25,9 @@ class CSanPham
 
 class CTranh : CSanPham
 {
-    public int ChieuDai { get; set; }
-    public int ChieuRong { get; set; }
-    public string TenHoaSi { get; set; }
+    protected int ChieuDai { get; set; }
+    protected int ChieuRong { get; set; }
+    protected string TenHoaSi { get; set; }
 
     public override void Nhap()
     {
@@ -63,8 +63,8 @@ class CTranh : CSanPham
 
 class CDia : CSanPham
 {
-    public string TenCaSi { get; set; }
-    public string TenDonVi { get; set; }
+    protected string TenCaSi { get; set; }
+    protected string TenDonVi { get; set; }
 
     public override void Nhap()
     {
@@ -97,9 +97,9 @@ class CDia : CSanPham
 
 class CKhachHang
 {
-    public string MaKhachHang { get; set; }
-    public string TenKhachHang { get; set; }
-    public string Phone { get; set; }
+    protected string MaKhachHang { get; set; }
+    protected string TenKhachHang { get; set; }
+    protected string Phone { get; set; }
 
     public void Nhap()
     {
@@ -137,9 +137,9 @@ class CKhachHang
 
 class CNgay
 {
-    public int Ngay { get; set; }
-    public int Thang { get; set; }
-    public int Nam { get; set; }
+    protected int Ngay { get; set; }
+    protected int Thang { get; set; }
+    protected int Nam { get; set; }
 
     public void Nhap()
     {
@@ -159,12 +159,12 @@ class CNgay
 
 class CHoaDon
 {
-    public string MaHoaDon { get; set; }
-    public CSanPham[] Sp { get; set; }
-    public int N { get; set; }
-    public CKhachHang Guest { get; set; }  
-    public int TongGiaTri { get; set; }
-    public CNgay NgayLap { get; set; }
+    protected string MaHoaDon { get; set; }
+    protected CSanPham[] Sp { get; set; }
+    protected int N { get; set; }
+    protected CKhachHang Guest { get; set; }
+    protected int TongGiaTri { get; set; }
+    protected CNgay NgayLap { get; set; }
 
     public void Nhap()
     {
@@ -230,9 +230,9 @@ class CHoaDon
 
 class CCuaHang
 {
-    public CHoaDon[] Ds { get; set; }
-    public int N { get; set; }
-    public int TongDoanhThu { get; set; }
+    protected CHoaDon[] Ds { get; set; }
+    protected int N { get; set; }
+    protected int TongDoanhThu { get; set; }
 
     public void Nhap()
     {
